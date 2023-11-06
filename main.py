@@ -2,6 +2,9 @@
 from diagram_director import DiagramDirector
 
 def main():
+    """
+    This function takes a JSON data as input, creates a diagram using DiagramDirector, and prints the built diagram.
+    """
     # Sample JSON data
     json_data = {
         "app": {

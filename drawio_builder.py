@@ -6,6 +6,23 @@ from package_element import PackageElement
 from class_element import ClassElement
 
 class DrawIODiagramBuilder:
+    """
+    A class used to build a DrawIO diagram from parsed JSON data.
+
+    Attributes
+    ----------
+    root : xml.etree.ElementTree.Element
+        The root element of the mxfile.
+    mxCell : xml.etree.ElementTree.Element
+        The mxCell element of the mxGraphModel.
+
+    Methods
+    -------
+    build(parsed_data)
+        Builds the DrawIO diagram from parsed JSON data.
+    _add_elements(parent, data)
+        Recursively adds elements to the diagram.
+    """
     def __init__(self):
         self.root = ET.Element('mxfile', host="app.diagrams.net")
         diagram = ET.SubElement(self.root, 'diagram', id="DyfSqh4o6D0qI5xqRX0x", name="Page-1")
@@ -15,17 +32,3 @@ class DrawIODiagramBuilder:
         root = ET.SubElement(mxGraphModel, 'root')
         parent = ET.SubElement(root, 'mxCell', id="0")
         self.mxCell = ET.SubElement(root, 'mxCell', id="1", parent="0")
-    
-    def build(self, parsed_data):
-        self._add_elements(self.mxCell, parsed_data)
-        return ET.tostring(self.root).decode()
-    
-    def _add_elements(self, parent, data):
-        for key, value in data.items():
-            if isinstance(value, dict):
-                package_elem = PackageElement(key)
-                parent.append(package_elem.elem)
-                self._add_elements(package_elem.elem, value)
-            else:
-                class_elem = ClassElement(key)
-                parent.append(class_elem.elem)
